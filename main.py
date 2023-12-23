@@ -1,6 +1,6 @@
 import pygame as pg
 import pymunk.pygame_util
-from collision import collision_simulation
+from collision import elasticity_true, elasticity_false
 
 pg.init()
 font = pg.font.SysFont("arial", 35)
@@ -26,12 +26,12 @@ class MenuButton:
 
 
 def main(): # Основная функция
-    buttons = [MenuButton(165, 130, 310, 50, collision_simulation, "Упругое столкновение"),
-               MenuButton(505, 130, 340, 50, collision_simulation, "Неупругое столкновение"),
-               MenuButton(165, 240, 310, 50, collision_simulation, "  Преломление луча"),
-               MenuButton(505, 240, 340, 50, collision_simulation, "      Сила Архимеда"),
-               MenuButton(505, 350, 340, 50, collision_simulation, "      Движение планет"),
-               MenuButton(165, 350, 310, 50, collision_simulation, "       Сила трения")
+    buttons = [MenuButton(165, 130, 310, 50, elasticity_true, "Упругое столкновение"),
+               MenuButton(505, 130, 340, 50, elasticity_false, "Неупругое столкновение"),
+               MenuButton(165, 240, 310, 50, elasticity_true, "  Преломление луча"),
+               MenuButton(505, 240, 340, 50, elasticity_true, "      Сила Архимеда"),
+               MenuButton(505, 350, 340, 50, elasticity_true, "      Движение планет"),
+               MenuButton(165, 350, 310, 50, elasticity_true, "       Сила трения")
                ]
 
     clock = pg.time.Clock()
