@@ -1,5 +1,6 @@
 import pygame as pg
 import pymunk.pygame_util
+from planets import planet_moving
 from collision import elasticity_true, elasticity_false
 
 pg.init()
@@ -30,7 +31,7 @@ def main(): # Основная функция
                MenuButton(505, 130, 340, 50, elasticity_false, "Неупругое столкновение"),
                MenuButton(165, 240, 310, 50, elasticity_true, "  Преломление луча"),
                MenuButton(505, 240, 340, 50, elasticity_true, "      Сила Архимеда"),
-               MenuButton(505, 350, 340, 50, elasticity_true, "      Движение планет"),
+               MenuButton(505, 350, 340, 50, planet_moving, "      Движение планет"),
                MenuButton(165, 350, 310, 50, elasticity_true, "       Сила трения")
                ]
 
