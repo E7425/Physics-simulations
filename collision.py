@@ -141,8 +141,8 @@ def collision_simulation(elastic=1):
         status.render_bar(surface)
         spd_cur1.render_bar(surface)
         spd_cur2.render_bar(surface)
-
-        space.step(1 / FPS)
+        if not pause:
+            space.step(1 / FPS)
         space.debug_draw(draw_options)
 
         pg.display.flip()
