@@ -1,6 +1,6 @@
 import pygame
 import math
-from input1 import InputVal
+from input import InputVal
 
 
 pygame.init()
@@ -66,5 +66,6 @@ def beam_ref_sim():
         clock.tick(100)
         pygame.display.flip()
     pygame.quit()
+
 
 beam_ref_sim()
