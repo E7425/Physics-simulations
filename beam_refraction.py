@@ -22,7 +22,6 @@ def beam_ref_sim():
     input_n2 = InputVal(100, 150, 120, 30, 3, default="n2")
     input_alpha = InputVal(100, 200, 120, 30, 3, default="alpha")
     inputs = [input_n1, input_n2, input_alpha]
-    values = [None, None, None]
 
     while run:
         for event in pygame.event.get():
