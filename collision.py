@@ -113,7 +113,7 @@ def collision_simulation(elastic=1):
                         status.set_text("Не все поля заполнены")
                     else:
                         try:
-                            spd1, spd2, m1, m2 = (int(i) for i in values)
+                            spd1, spd2, m1, m2 = (float(i) for i in values)
                             obj1 = create_square(space, (60, HEIGHT - 70), m1, spd1, elastic)
                             obj2 = create_square(space, (WIDTH - 60, HEIGHT - 70), m2, -spd2, elastic)
                         except ValueError:
