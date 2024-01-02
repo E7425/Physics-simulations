@@ -2,15 +2,18 @@ import pygame
 import math
 from input1 import InputVal
 
+
 pygame.init()
 
 
+# функция для получения конечной координаты по градусной мере угла
 def get_coords(x, y, alpha, length):
     x += length * math.sin(alpha)
     y += length * math.cos(alpha)
     return x, y
 
 
+# функция для рисования 1 угла
 def draw_alpha(screen, alpha):
     screen.fill('white')
     pygame.draw.rect(screen, 'grey', (0, 500, 1000, 1000))
@@ -23,6 +26,7 @@ def draw_alpha(screen, alpha):
     screen.blit(string_rendered, intro_rect)
 
 
+# функция для рисования 2 угла
 def draw_gamma(screen, gamma, x, y):
     pygame.draw.line(screen, 'orange', (500, 500), (x, y), 4)
     font = pygame.font.Font(None, 30)
@@ -32,6 +36,7 @@ def draw_gamma(screen, gamma, x, y):
     screen.blit(string_rendered, intro_rect)
 
 
+# функция для вывода сообщения об ошибке
 def error_message(screen):
     font = pygame.font.Font(None, 50)
     string_rendered = font.render('ОШИБКА. НЕВЕРНЫЙ ВВОД', 1, pygame.Color('red'))
@@ -39,7 +44,9 @@ def error_message(screen):
     screen.blit(string_rendered, intro_rect)
 
 
+# основная функция
 def beam_ref_sim():
+    # параметры pygame
     size = width, height = 1000, 1000
     screen = pygame.display.set_mode(size)
     clock = pygame.time.Clock()
@@ -48,6 +55,7 @@ def beam_ref_sim():
     draw1 = False
     draw2 = False
     error = False
+    # поля для ввода данных
     input_n1 = InputVal(100, 100, 120, 30, 3, default="n1")
     input_n2 = InputVal(100, 150, 120, 30, 3, default="n2")
     input_alpha = InputVal(100, 200, 120, 30, 3, default="alpha")
@@ -58,7 +66,7 @@ def beam_ref_sim():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_k:
+                if event.key == pygame.K_k: # старт симуляции
                     alpha = str(input_alpha.get_text())
                     n1 = str(input_n1.get_text())
                     n2 = str(input_n2.get_text())
