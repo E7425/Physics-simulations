@@ -1,5 +1,5 @@
 import pygame
-from input1 import InputVal
+from input import InputVal
 
 
 pygame.init()
