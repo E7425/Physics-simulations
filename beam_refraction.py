@@ -106,6 +106,3 @@ def beam_ref_sim():
 
         pygame.display.flip()
     pygame.quit()
-
-
-beam_ref_sim()
