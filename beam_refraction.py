@@ -1,6 +1,6 @@
 import pygame
 import math
-from input1 import InputVal
+from input import InputVal
 
 
 pygame.init()
@@ -49,16 +49,15 @@ def beam_ref_sim():
     # параметры pygame
     size = width, height = 1000, 1000
     screen = pygame.display.set_mode(size)
-    clock = pygame.time.Clock()
-    FPS = 60
     run = True
-    draw1 = False
+    draw = False
     draw2 = False
     error = False
+    input_flag = True
     # поля для ввода данных
-    input_n1 = InputVal(100, 100, 120, 30, 3, default="n1")
-    input_n2 = InputVal(100, 150, 120, 30, 3, default="n2")
-    input_alpha = InputVal(100, 200, 120, 30, 3, default="alpha")
+    input_n1 = InputVal(100, 100, 400, 30, 3, default="показатель преломления 1 поверхности")
+    input_n2 = InputVal(100, 150, 400, 30, 3, default="показатель преломления 2 поверхности")
+    input_alpha = InputVal(100, 200, 400, 30, 3, default="угол падения луча")
     inputs = [input_n1, input_n2, input_alpha]
 
     while run:
@@ -66,44 +65,45 @@ def beam_ref_sim():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_k: # старт симуляции
-                    alpha = str(input_alpha.get_text())
-                    n1 = str(input_n1.get_text())
-                    n2 = str(input_n2.get_text())
-                    if alpha.isdigit() and n1.isdigit() and n2.isdigit():
-                        if 0 <= float(alpha) <= 180:
-                            if not draw1:
-                                error = False
-                                draw1 = True
+                if event.key == pygame.K_k:  # старт симуляции
+                    if bool(input_n1.get_text()) and bool(input_n2.get_text()) and bool(input_alpha.get_text()):
+                        if input_n1.get_text().isdigit() and input_n2.get_text().isdigit() and \
+                                input_alpha.get_text().isdigit():
+                            if 0 <= int(input_alpha.get_text()) <= 180:
+                                if input_flag:
+                                    draw = True
+                                    input_flag = False
+                                else:
+                                    draw2 = True
                             else:
-                                error = False
-                                draw2 = True
+                                error = True
                         else:
                             error = True
                     else:
                         error = True
 
-            if draw1:
-                n1 = float(input_n1.get_text())
-                n2 = float(input_n2.get_text())
-                alpha = float(input_alpha.get_text())
-                draw_alpha(screen, alpha)
-
-                if draw2:
-                    gamma = math.asin((n1 * abs(math.sin(math.radians(alpha)))) / n2)
-                    x, y = get_coords(500, 500, gamma, 1000)
-                    draw_gamma(screen, gamma, x, y)
-            else:
-                screen.fill('black')
-                for i in inputs:
-                    i.render_input(screen)
-                if error:
-                    error_message(screen)
-
             for i in inputs:
                 i.event_handler(event)
 
-        clock.tick(FPS)
+        if input_flag:
+            screen.fill('black')
+            for i in inputs:
+                i.render_input(screen)
+            if error:
+                error_message(screen)
+
+        elif draw:
+            # запись введенных данных в переменные
+            alpha = float(input_alpha.get_text())  # угол падения луча
+            n1 = float(input_n1.get_text())  # показатель преломления 1 поверхности
+            n2 = float(input_n2.get_text())  # показатель преломления 2 поверхности
+            draw_alpha(screen, alpha)
+            if draw2:
+                gamma = math.asin((n1 * abs(math.sin(math.radians(alpha)))) / n2)
+                x, y = get_coords(500, 500, gamma, 1000)
+                draw_gamma(screen, gamma, x, y)
+                draw = False
+
         pygame.display.flip()
     pygame.quit()
 
