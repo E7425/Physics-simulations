@@ -77,7 +77,7 @@ def collision_simulation(elastic=1):
     m1, m2 = None, None
     values = [spd1, spd2,  m1, m2]
     # Создаем платформу
-    segment_shape = pymunk.Segment(space.static_body, (2, HEIGHT), (WIDTH, HEIGHT), 26)
+    segment_shape = pymunk.Segment(space.static_body, (-2000, HEIGHT), (WIDTH * 10, HEIGHT), 26)
     space.add(segment_shape)
     segment_shape.elasticity = 0
     segment_shape.friction = 0.0
