@@ -59,7 +59,7 @@ def falling_simulation():
                 i.event_handler(event)
 
         if input_flag:
-            screen.fill('black')
+            screen.fill('white')
             for i in inputs:
                 i.render_input(screen)
             if error:
@@ -104,5 +104,3 @@ def falling_simulation():
 
         clock.tick(FPS)
         pygame.display.update()
-    pygame.quit()
-

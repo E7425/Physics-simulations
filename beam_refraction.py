@@ -86,7 +86,7 @@ def beam_ref_sim():
                 i.event_handler(event)
 
         if input_flag:
-            screen.fill('black')
+            screen.fill('white')
             for i in inputs:
                 i.render_input(screen)
             if error:
@@ -105,4 +105,3 @@ def beam_ref_sim():
                 draw = False
 
         pygame.display.flip()
-    pygame.quit()

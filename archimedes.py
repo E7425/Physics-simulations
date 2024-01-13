@@ -41,7 +41,7 @@ def archimedes_simulation():
     input_flag = True
 
     # поля для ввода данных
-    input_ro_water = InputVal(100, 100, 300, 30, 10, default="плотность воды")
+    input_ro_water = InputVal(100, 100, 300, 30, 10, default="плотность жидкости")
     input_ro_parallelepiped = InputVal(100, 150, 300, 30, 10, default="плотность тела")
     input_height_parallelepiped = InputVal(100, 200, 300, 30, 10, default="высота тела")
     input_s_plunge_face = InputVal(100, 250, 300, 30, 10, default="площадь погружаемой грани")
@@ -69,7 +69,7 @@ def archimedes_simulation():
                 i.event_handler(event)
 
         if input_flag:
-            screen.fill('black')
+            screen.fill('white')
             for i in inputs:
                 i.render_input(screen)
             if error:
@@ -103,7 +103,3 @@ def archimedes_simulation():
 
         clock.tick(FPS)
         pygame.display.update()
-    pygame.quit()
-
-
-archimedes_simulation()
