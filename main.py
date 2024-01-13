@@ -1,8 +1,10 @@
 import pygame as pg
-import pymunk.pygame_util
 from planets import planet_moving
 from collision import elasticity_true, elasticity_false
 from friction import friction_simulation
+from beam_refraction import beam_ref_sim
+from archimedes import archimedes_simulation
+from energy import falling_simulation
 
 pg.init()
 font = pg.font.SysFont("arial", 35)
@@ -30,10 +32,11 @@ class MenuButton:
 def main(): # Основная функция
     buttons = [MenuButton(165, 130, 310, 50, elasticity_true, "Упругое столкновение"),
                MenuButton(505, 130, 340, 50, elasticity_false, "Неупругое столкновение"),
-               MenuButton(165, 240, 310, 50, elasticity_true, "  Преломление луча"),
-               MenuButton(505, 240, 340, 50, elasticity_true, "      Сила Архимеда"),
+               MenuButton(165, 240, 310, 50, beam_ref_sim, "  Преломление луча"),
+               MenuButton(505, 240, 340, 50, archimedes_simulation, "      Сила Архимеда"),
                MenuButton(505, 350, 340, 50, planet_moving, "      Движение планет"),
-               MenuButton(165, 350, 310, 50, friction_simulation, "       Сила трения")
+               MenuButton(165, 350, 310, 50, friction_simulation, "       Сила трения"),
+               MenuButton(165, 450, 310, 50, falling_simulation, "  Падение тела")
                ]
 
     clock = pg.time.Clock()
