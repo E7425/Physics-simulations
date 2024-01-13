@@ -28,9 +28,11 @@ class InputVal:
                 self.active = not self.active
             else:
                 self.active = False
+                return self.get_text()
         if event.type == pg.KEYDOWN:
             if self.active:
-                if event.key == pg.K_RETURN:
+                if event.key == pg.K_RETURN or event.key == pg.K_k:
+                    self.active = False
                     return self.get_text()
                 elif event.key == pg.K_BACKSPACE:
                     self.text = self.text[:-1]
