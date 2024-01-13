@@ -10,7 +10,7 @@ FPS = 120
 
 
 def init_planets():
-    sun = Planet(0, 0, 20, "yellow", 1.9891 * 10 ** 30)
+    sun = Planet(0, 0, 15, "yellow", 1.9891 * 10 ** 30)
     sun.vx = 0 * 10 ** 3
     sun.vy = 0 * 10 ** 3
     sun.is_sun = True
@@ -96,21 +96,24 @@ class Planet:
 
 
 def planet_moving():
+    pause = False
     run = True
     clock = pygame.time.Clock()
 
     # Создание планет (Реальные характеристики)
     objects = init_planets()
 
-    inp_xv = InputVal(100, 100, 220, 30, 8, default="Гор. скор. солнца(км/с))")
+    inp_xv = InputVal(100, 100, 240, 30, 8, default="Гор. скор. солнца(км/с))")
     sun_xv = 0
     sun_yv = 0
-    inp_yv = InputVal(100, 150, 220, 30, 8, default="Верт. скор. солнца(км/с)")
+    inp_yv = InputVal(100, 150, 240, 30, 8, default="Верт. скор. солнца(км/с)")
 
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                pause = not pause
             if event.type == pygame.KEYDOWN and event.key == pygame.K_k:
                 objects = init_planets()
 
@@ -139,10 +142,13 @@ def planet_moving():
 
         # Отрисовка планет
         for p in objects:
-            for j in p.orbit:
-                pygame.draw.circle(screen, p.color, (j[0] * Planet.scaling + WIDTH / 2, j[1] * Planet.scaling + HEIGHT / 2), 1)
+            if len(p.orbit) >= 2:
+                pygame.draw.lines(screen, p.color, False, points=
+                [(x * Planet.scaling + WIDTH / 2, y * Planet.scaling + HEIGHT / 2) for x, y in p.orbit])
             p.render(screen)
-            p.move(objects)
+            if not pause:
+                p.move(objects)
+
         inp_yv.render_input(screen)
         inp_xv.render_input(screen)
         pygame.display.update()
