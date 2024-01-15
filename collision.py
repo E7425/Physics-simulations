@@ -11,16 +11,14 @@ FPS = 60
 
 pg.init()
 font = pg.font.SysFont("arial", 25)
-surface = pg.display.set_mode(RES)
 clock = pg.time.Clock()
-draw_options = pymunk.pygame_util.DrawOptions(surface)
 
 # настройки Pymunk
 space = pymunk.Space()
 space.gravity = 0, 8000
 
 
-class Status_bar:
+class StatusBar:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -44,9 +42,9 @@ def elasticity_false():
     collision_simulation(0)
 
 
-def render_inputs(inputs):
+def render_inputs(inputs, screen):
     for i in inputs:
-        i.render_input(surface)
+        i.render_input(screen)
 
 
 def create_square(space, pos, mass, speed, elastic=1):
@@ -70,10 +68,12 @@ def create_square(space, pos, mass, speed, elastic=1):
 def collision_simulation(elastic=1):
     global space, draw_options
     # Нужные значения
+    surface = pg.display.set_mode(RES)
+    draw_options = pymunk.pygame_util.DrawOptions(surface)
     obj1, obj2 = None, None
     spd1, spd2 = None, None
-    spd_cur1 = Status_bar(380, 100, 120, 30)
-    spd_cur2 = Status_bar(380, 150, 120, 30)
+    spd_cur1 = StatusBar(380, 100, 120, 30)
+    spd_cur2 = StatusBar(380, 150, 120, 30)
     m1, m2 = None, None
     values = [spd1, spd2,  m1, m2]
     # Создаем платформу
@@ -82,7 +82,7 @@ def collision_simulation(elastic=1):
     segment_shape.elasticity = 0
     segment_shape.friction = 0.0
 
-    status = Status_bar(100, 200, 270, 40)
+    status = StatusBar(100, 200, 270, 40)
     status.set_text("Нажмите 'k', чтобы начать")
     # Поля для ввода
     input_speed1 = InputVal(100, 100, 120, 30, 8, default="Скорость 1")
@@ -114,6 +114,8 @@ def collision_simulation(elastic=1):
                     else:
                         try:
                             spd1, spd2, m1, m2 = (float(i) for i in values)
+                            if m1 <= 0 or m2 <= 0:
+                                raise ValueError
                             obj1 = create_square(space, (60, HEIGHT - 70), m1, spd1, elastic)
                             obj2 = create_square(space, (WIDTH - 60, HEIGHT - 70), m2, -spd2, elastic)
                         except ValueError:
@@ -137,7 +139,7 @@ def collision_simulation(elastic=1):
             spd_cur2.set_text(str(round(obj2.body.velocity[0], 2)))
 
         surface.fill("white")
-        render_inputs(inputs)
+        render_inputs(inputs, surface)
         status.render_bar(surface)
         spd_cur1.render_bar(surface)
         spd_cur2.render_bar(surface)
