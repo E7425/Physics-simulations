@@ -1,7 +1,6 @@
 import pygame
 from input import InputVal
 
-
 pygame.init()
 
 
@@ -16,7 +15,7 @@ def get_gravity(v_parallelepiped, ro_cube):
 
 
 # функция для отрисовки тела в воде
-def draw_parallelepiped(screen, y):
+def render_object(screen, y):
     pygame.draw.rect(screen, 'red', (425, y, 200, 250))
 
 
@@ -25,6 +24,18 @@ def error_message(screen, font):
     string_rendered = font.render('ОШИБКА. НЕВЕРНЫЙ ВВОД', 1, pygame.Color('red'))
     intro_rect = string_rendered.get_rect()
     screen.blit(string_rendered, intro_rect)
+
+
+# функция для рисования сосуда с водой
+def render_vessel(screen):
+    pygame.draw.rect(screen, 'black', (290, 400, 470, 410))
+    pygame.draw.rect(screen, (0, 190, 255), (300, 400, 450, 400))
+
+
+# координаты тела
+def get_pos(ro_parallelepiped, v_parallelepiped, ro_water):
+    v_parallelepiped_in_water = (ro_parallelepiped * v_parallelepiped) / ro_water
+    return 200 * (v_parallelepiped_in_water / v_parallelepiped) + 200
 
 
 # основная функция
@@ -36,7 +47,7 @@ def archimedes_simulation():
     FPS = 60
     font = pygame.font.Font(None, 50)
     run = True
-    draw = False
+    draw = True
     error = False
     input_flag = True
 
@@ -53,18 +64,7 @@ def archimedes_simulation():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:  # старт симуляции и проверки на правильность введенных данных
-                    if bool(input_ro_water.get_text()) and bool(input_ro_parallelepiped.get_text()) and \
-                            bool(input_height_parallelepiped.get_text()) and bool(input_s_plunge_face.get_text()):
-
-                        if input_ro_water.get_text().isdigit() and input_ro_parallelepiped.get_text().isdigit() and \
-                                input_height_parallelepiped.get_text().isdigit() and \
-                                input_s_plunge_face.get_text().isdigit():
-                            input_flag = False
-                            draw = True
-                        else:
-                            error = True
-                    else:
-                        error = True
+                    input_flag = False
             for i in inputs:
                 i.event_handler(event)
 
@@ -76,34 +76,32 @@ def archimedes_simulation():
                 error_message(screen, font)
 
         elif draw:
-            # запись введенных данных в переменные
-            ro_water = int(input_ro_water.get_text())                           # плотность воды
-            ro_parallelepiped = int(input_ro_parallelepiped.get_text())         # плотность тела
-            hight_parallelepiped = int(input_height_parallelepiped.get_text())  # высота тела
-            s_plunge_face = int(input_s_plunge_face.get_text())                 # площадь погруж. грани
+            try:
+                # запись введенных данных в переменные
+                ro_water = int(input_ro_water.get_text())  # плотность воды
+                ro_parallelepiped = int(input_ro_parallelepiped.get_text())  # плотность тела
+                hight_parallelepiped = int(input_height_parallelepiped.get_text())  # высота тела
+                s_plunge_face = int(input_s_plunge_face.get_text())  # площадь погруж. грани
 
-            v_parallelepiped = hight_parallelepiped * s_plunge_face          # объем тела
-            f_archimedes = get_archimedes(v_parallelepiped, ro_water)        # архимедова сила
-            f_gravity = get_gravity(v_parallelepiped, ro_parallelepiped)     # сила тяжести
-            
-            screen.fill('white')
-            pygame.draw.rect(screen, 'black', (290, 400, 470, 410))
-            pygame.draw.rect(screen, (0, 190, 255), (300, 400, 450, 400))
+                v_parallelepiped = hight_parallelepiped * s_plunge_face  # объем тела
+                f_archimedes = get_archimedes(v_parallelepiped, ro_water)  # архимедова сила
+                f_gravity = get_gravity(v_parallelepiped, ro_parallelepiped)  # сила тяжести
 
-            if f_archimedes < f_gravity:
-                draw_parallelepiped(screen, 550)
-            elif f_archimedes > f_gravity:
-                v_parallelepiped_in_water = (ro_parallelepiped * v_parallelepiped) / ro_water
-                y = 200 * (v_parallelepiped_in_water / v_parallelepiped) + 200
-                draw_parallelepiped(screen, y)
-            else:
-                draw_parallelepiped(screen, 475)
+                screen.fill('white')
+                render_vessel(screen)
 
-            draw = False
+                if f_archimedes < f_gravity:
+                    render_object(screen, 550)
+                elif f_archimedes > f_gravity:
+                    render_object(screen, (get_pos(ro_parallelepiped, v_parallelepiped, ro_water)))
+                else:
+                    render_object(screen, 475)
+
+                draw = False
+            except Exception:
+                input_flag = True
+                error = True
 
         clock.tick(FPS)
         pygame.display.update()
     pygame.quit()
-
-
-archimedes_simulation()
