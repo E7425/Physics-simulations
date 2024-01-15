@@ -5,7 +5,6 @@ from input import InputVal
 pygame.init()
 
 WIDTH, HEIGHT = 1040, 680
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
 FPS = 120
 
 
@@ -96,6 +95,7 @@ class Planet:
 
 
 def planet_moving():
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pause = False
     run = True
     clock = pygame.time.Clock()
@@ -136,7 +136,6 @@ def planet_moving():
                     elif inp == inp_yv:
                         sun_yv = res
 
-
         clock.tick(FPS)
         screen.fill("black")
 
@@ -144,7 +143,8 @@ def planet_moving():
         for p in objects:
             if len(p.orbit) >= 2:
                 pygame.draw.lines(screen, p.color, False, points=
-                [(x * Planet.scaling + WIDTH / 2, y * Planet.scaling + HEIGHT / 2) for x, y in p.orbit])
+                                  [(x * Planet.scaling + WIDTH / 2, y * Planet.scaling + HEIGHT / 2)
+                                   for x, y in p.orbit])
             p.render(screen)
             if not pause:
                 p.move(objects)
