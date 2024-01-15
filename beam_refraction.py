@@ -2,7 +2,6 @@ import pygame
 import math
 from input import InputVal
 
-
 pygame.init()
 
 
@@ -47,7 +46,7 @@ def error_message(screen):
 # основная функция
 def beam_ref_sim():
     # параметры pygame
-    size = width, height = 1000, 1000
+    size = width, height = 1000, 680
     screen = pygame.display.set_mode(size)
     run = True
     draw = False
@@ -66,20 +65,18 @@ def beam_ref_sim():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:  # старт симуляции
-                    if bool(input_n1.get_text()) and bool(input_n2.get_text()) and bool(input_alpha.get_text()):
-                        if input_n1.get_text().isdigit() and input_n2.get_text().isdigit() and \
-                                input_alpha.get_text().isdigit():
-                            if 0 <= int(input_alpha.get_text()) <= 180:
-                                if input_flag:
-                                    draw = True
-                                    input_flag = False
-                                else:
-                                    draw2 = True
-                            else:
-                                error = True
+                    try:
+                        alpha = float(input_alpha.get_text())  # угол падения луча
+                        n1 = float(input_n1.get_text())  # показатель преломления 1 поверхности
+                        n2 = float(input_n2.get_text())  # показатель преломления 2 поверхности
+                        if (not (0 < alpha <= 180)) or n1 == 0 or n2 == 0:
+                            raise ValueError
+                        if input_flag:
+                            draw = True
+                            input_flag = False
                         else:
-                            error = True
-                    else:
+                            draw2 = True
+                    except (ValueError, TypeError):
                         error = True
 
             for i in inputs:
@@ -94,9 +91,6 @@ def beam_ref_sim():
 
         elif draw:
             # запись введенных данных в переменные
-            alpha = float(input_alpha.get_text())  # угол падения луча
-            n1 = float(input_n1.get_text())  # показатель преломления 1 поверхности
-            n2 = float(input_n2.get_text())  # показатель преломления 2 поверхности
             draw_alpha(screen, alpha)
             if draw2:
                 gamma = math.asin((n1 * abs(math.sin(math.radians(alpha)))) / n2)

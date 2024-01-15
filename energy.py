@@ -23,7 +23,7 @@ def print_text(screen, text, y, font):
 # основная функция
 def falling_simulation():
     # параметры pygame
-    size = width, height = 1000, 1000
+    size = width, height = 1040, 1000
     screen = pygame.display.set_mode(size)
     clock = pygame.time.Clock()
     FPS = 60
@@ -46,13 +46,15 @@ def falling_simulation():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:
-                    if bool(input_h.get_text()) and bool(input_m.get_text()):
-                        if input_h.get_text().isdigit() and input_m.get_text().isdigit():
-                            input_flag = False
-                            draw = True
-                        else:
-                            error = True
-                    else:
+                    try:
+                        # запись введенных данных в переменные
+                        h = float(input_h.get_text())  # высота падения в метрах
+                        m = float(input_m.get_text())  # масса тела
+                        if m <= 0 or h < 1:
+                            raise ValueError
+                        input_flag = False
+                        draw = True
+                    except (ValueError, TypeError):
                         error = True
 
             for i in inputs:
@@ -66,10 +68,6 @@ def falling_simulation():
                 error_message(screen, font)
 
         elif draw:
-            # запись введенных данных в переменные
-            h = float(input_h.get_text())   # высота падения в метрах
-            m = float(input_m.get_text())   # масса тела
-
             total_t = (2 * h / 10) ** 0.5   # общее время падения
             scale = h / height_pix          # кол-во метров в 1 пикселе
             max_potential_e = m * 10 * h    # максимальная потенциальная энергия

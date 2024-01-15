@@ -53,17 +53,15 @@ def archimedes_simulation():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:  # старт симуляции и проверки на правильность введенных данных
-                    if bool(input_ro_water.get_text()) and bool(input_ro_parallelepiped.get_text()) and \
-                            bool(input_height_parallelepiped.get_text()) and bool(input_s_plunge_face.get_text()):
-
-                        if input_ro_water.get_text().isdigit() and input_ro_parallelepiped.get_text().isdigit() and \
-                                input_height_parallelepiped.get_text().isdigit() and \
-                                input_s_plunge_face.get_text().isdigit():
-                            input_flag = False
-                            draw = True
-                        else:
-                            error = True
-                    else:
+                    try:
+                        # запись введенных данных в переменные
+                        ro_water = int(input_ro_water.get_text())  # плотность воды
+                        ro_parallelepiped = int(input_ro_parallelepiped.get_text())  # плотность тела
+                        hight_parallelepiped = int(input_height_parallelepiped.get_text())  # высота тела
+                        s_plunge_face = int(input_s_plunge_face.get_text())  # площадь погруж. грани
+                        input_flag = False
+                        draw = True
+                    except (ValueError, TypeError):
                         error = True
             for i in inputs:
                 i.event_handler(event)
@@ -76,12 +74,6 @@ def archimedes_simulation():
                 error_message(screen, font)
 
         elif draw:
-            # запись введенных данных в переменные
-            ro_water = int(input_ro_water.get_text())                           # плотность воды
-            ro_parallelepiped = int(input_ro_parallelepiped.get_text())         # плотность тела
-            hight_parallelepiped = int(input_height_parallelepiped.get_text())  # высота тела
-            s_plunge_face = int(input_s_plunge_face.get_text())                 # площадь погруж. грани
-
             v_parallelepiped = hight_parallelepiped * s_plunge_face          # объем тела
             f_archimedes = get_archimedes(v_parallelepiped, ro_water)        # архимедова сила
             f_gravity = get_gravity(v_parallelepiped, ro_parallelepiped)     # сила тяжести
