@@ -17,9 +17,9 @@ class InputVal:
 
     def render_input(self, surface):
         if self.text:
-            surface.blit(self.text_surface, (self.rect.x+4, self.rect.y+5))
+            surface.blit(self.text_surface, (self.rect.x + 4, self.rect.y + 5))
         else:
-            surface.blit(self.font.render(self.default, True, self.color), (self.rect.x+4, self.rect.y+5))
+            surface.blit(self.font.render(self.default, True, self.color), (self.rect.x + 4, self.rect.y + 5))
         pg.draw.rect(surface, self.color, self.rect, 1)
 
     def event_handler(self, event):
