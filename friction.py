@@ -1,7 +1,7 @@
 import pygame as pg
 import pymunk.pygame_util
 from random import randrange
-from collision import Status_bar
+from collision import StatusBar
 from input import InputVal
 
 pymunk.pygame_util.positive_y_is_up = False
@@ -13,18 +13,12 @@ FPS = 60
 
 pg.init()
 font = pg.font.SysFont("arial", 25)
-surface = pg.display.set_mode(RES)
 clock = pg.time.Clock()
-draw_options = pymunk.pygame_util.DrawOptions(surface)
-
-# настройки Pymunk
-space = pymunk.Space()
-space.gravity = 0, 8000
 
 
-def render_inputs(inputs):
+def render_inputs(inputs, screen):
     for i in inputs:
-        i.render_input(surface)
+        i.render_input(screen)
 
 
 def create_square(space, pos, mass, speed):
@@ -46,14 +40,18 @@ def create_square(space, pos, mass, speed):
 
 
 def friction_simulation():
-    global space, draw_options
     # Нужные значения
     obj = None
+    surface = pg.display.set_mode(RES)
+    draw_options = pymunk.pygame_util.DrawOptions(surface)
 
+    # настройки Pymunk
+    space = pymunk.Space()
+    space.gravity = 0, 8000
 
-    spd_cur = Status_bar(380, 100, 120, 30)
-    accel_cur = Status_bar(380, 150, 120, 30)
-    distance_cur = Status_bar(380, 200, 120, 30)
+    spd_cur = StatusBar(380, 100, 120, 30)
+    accel_cur = StatusBar(380, 150, 120, 30)
+    distance_cur = StatusBar(380, 200, 120, 30)
     spd, m, friction = None, None, None
     values = [spd, m, friction]
     # Создаем платформу
@@ -62,7 +60,7 @@ def friction_simulation():
     segment_shape.elasticity = 0
     segment_shape.friction = 0.0
 
-    status = Status_bar(100, 200, 270, 40)
+    status = StatusBar(100, 200, 270, 40)
     status.set_text("Нажмите 'k', чтобы начать")
     # Поля для ввода
     input_speed = InputVal(100, 100, 120, 30, 8, default="Скорость")
@@ -91,6 +89,8 @@ def friction_simulation():
                     else:
                         try:
                             spd, friction, m = (float(i) for i in values)
+                            if m <= 0:
+                                raise ValueError
                             obj = create_square(space, (60, HEIGHT - 58), m, spd)
                         except ValueError:
                             status.set_text("Некорректные данные")
@@ -112,7 +112,7 @@ def friction_simulation():
             accel_cur.set_text("-" + str(round(friction * m * 10, 2)))
 
         surface.fill("white")
-        render_inputs(inputs)
+        render_inputs(inputs, surface)
         status.render_bar(surface)
         for cur in (spd_cur, distance_cur, accel_cur):
             cur.render_bar(surface)
@@ -125,6 +125,3 @@ def friction_simulation():
         space.debug_draw(draw_options)
         pg.display.flip()
         clock.tick(FPS)
-    space = pymunk.Space()
-    space.gravity = 0, 8000
-    draw_options = pymunk.pygame_util.DrawOptions(surface)
