@@ -23,21 +23,21 @@ def print_text(screen, text, y, font):
 # основная функция
 def falling_simulation():
     # параметры pygame
-    size = width, height = 1000, 1000
+    size = width, height = 1040, 680
     screen = pygame.display.set_mode(size)
     clock = pygame.time.Clock()
     FPS = 60
-    font = pygame.font.Font(None, 50)
+    font = pygame.font.Font(None, 30)
     run = True
     draw = True
     error = False
     input_flag = True
-    height_pix = 680    # высота падения в пикселях
-    t = 0               # счетчик времени (в кадрах)
+    height_pix = 380    # высота падения в пикселях
+    t = 0               # счетчик времени (в кадрах в секунду)
 
     # поля для ввода данных
-    input_h = InputVal(100, 100, 170, 30, 3, default="высота падения")
-    input_m = InputVal(100, 150, 170, 30, 3, default="масса тела")
+    input_h = InputVal(100, 100, 170, 30, 7, default="высота падения")
+    input_m = InputVal(100, 150, 170, 30, 7, default="масса тела")
     inputs = [input_h, input_m]
 
     while run:
@@ -79,8 +79,8 @@ def falling_simulation():
                     # вывод значений энергии объекта
                     screen.fill(pygame.Color('white'))
                     print_text(screen, 'кинетическая энергия ' + str(int(kinetic_e)), 0, font)
-                    print_text(screen, 'потенциальная энергия ' + str(int(potential_e)), 50, font)
-                    print_text(screen, 'максимальная потенциальная энергия ' + str(int(max_potential_e)), 100, font)
+                    print_text(screen, 'потенциальная энергия ' + str(int(potential_e)), 30, font)
+                    print_text(screen, 'максимальная потенциальная энергия ' + str(int(max_potential_e)), 60, font)
 
                     pygame.draw.rect(screen, 'red', (425, 150 + s_pix, 150, 150))
                     t += 1
@@ -91,11 +91,11 @@ def falling_simulation():
                     # вывод значений энергии объекта
                     screen.fill('white')
                     print_text(screen, 'кинетическая энергия ' + '0', 0, font)
-                    print_text(screen, 'потенциальная энергия ' + '0', 50, font)
-                    print_text(screen, 'максимальная потенциальная энергия ' + str(int(max_potential_e)), 100, font)
-                    print_text(screen, 'максимальная кинетическая энергия ' + str(int(max_kinetic_e)), 150, font)
+                    print_text(screen, 'потенциальная энергия ' + '0', 30, font)
+                    print_text(screen, 'максимальная потенциальная энергия ' + str(int(max_potential_e)), 60, font)
+                    print_text(screen, 'максимальная кинетическая энергия ' + str(int(max_kinetic_e)), 90, font)
 
-                    pygame.draw.rect(screen, 'red', (425, 860, 150, 150))
+                    pygame.draw.rect(screen, 'red', (425, 540, 150, 150))
                     draw = False
             except Exception:
                 input_flag = True
