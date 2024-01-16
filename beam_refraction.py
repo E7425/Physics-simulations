@@ -46,7 +46,7 @@ def error_message(screen):
 # основная функция
 def beam_ref_sim():
     # параметры pygame
-    size = width, height = 1000, 680
+    size = width, height = 1000, 1000
     screen = pygame.display.set_mode(size)
     run = True
     draw = False
