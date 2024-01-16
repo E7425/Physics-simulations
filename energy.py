@@ -31,6 +31,7 @@ def falling_simulation():
     run = True
     draw = True
     error = False
+    pause = False
     input_flag = True
     height_pix = 380    # высота падения в пикселях
     t = 0               # счетчик времени (в кадрах в секунду)
@@ -47,6 +48,13 @@ def falling_simulation():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:
                     input_flag = False
+                if event.key == pygame.K_p:
+                    if pause:
+                        pause = False
+                        draw = False
+                    else:
+                        pause = True
+                        draw = True
 
             for i in inputs:
                 i.event_handler(event)
@@ -104,4 +112,3 @@ def falling_simulation():
 
         clock.tick(FPS)
         pygame.display.update()
-    pygame.quit()
