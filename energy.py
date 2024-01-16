@@ -36,8 +36,8 @@ def falling_simulation():
     t = 0               # счетчик времени (в кадрах)
 
     # поля для ввода данных
-    input_h = InputVal(100, 100, 170, 30, 3, default="высота падения")
-    input_m = InputVal(100, 150, 170, 30, 3, default="масса тела")
+    input_h = InputVal(100, 100, 170, 30, 8, default="высота падения")
+    input_m = InputVal(100, 150, 170, 30, 8, default="масса тела")
     inputs = [input_h, input_m]
 
     while run:
